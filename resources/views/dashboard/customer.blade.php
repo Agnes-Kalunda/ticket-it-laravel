@@ -1,4 +1,4 @@
-<!-- resources/views/dashboard/customer.blade.php -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
