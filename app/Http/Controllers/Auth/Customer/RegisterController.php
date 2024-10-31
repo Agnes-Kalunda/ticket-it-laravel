@@ -12,40 +12,40 @@ use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
-    //
     use RegistersUsers;
 
     protected $redirectTo = "/customer/dashboard";
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware("customer.guest");
     }
 
-    public function showRegistrationForm(){
+    public function showRegistrationForm()
+    {
         return view("auth.customer.register");
-}
+    }
 
-
-    protected function validator(array $data){
+    protected function validator(array $data)
+    {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:customers'],
             'username' => ['required', 'string', 'max:255', 'unique:customers'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
 
-    protected function create(array $data){
+    protected function create(array $data)
+    {
         return Customer::create([
-            'name'=> $data['name'],
-            'email'=> $data['email'],
-            'username'=> $data['username'],
-            'password'=> Hash::make($data['password']),
-            ]);
-        }
+            'email' => $data['email'],
+            'username' => $data['username'],
+            'password' => Hash::make($data['password']),
+        ]);
+    }
 
-    protected function guard(){
+    protected function guard()
+    {
         return Auth::guard('customer');
     }
-}    
-
+}
