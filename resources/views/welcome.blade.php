@@ -4,46 +4,37 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Support Ticket System') }}</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <style>
-        .btn-xl {
-            padding: 1rem 2rem;
-            font-size: 1.25rem;
-            border-radius: 0.5rem;
-        }
-    </style>
 </head>
-<body>
+<body class="bg-light">
     <div class="container">
         <div class="row min-vh-100 align-items-center">
             <div class="col-12 text-center">
-                <h1 class="display-4 mb-5">Welcome to Support Ticket System</h1>
+                <h1 class="display-4 mb-5">Support Ticket System</h1>
                 
                 <div class="row justify-content-center">
-                    <!-- Staff Section -->
+                    <!-- staff Section -->
                     <div class="col-md-5 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body text-center">
-                                <h3 class="card-title mb-4">Staff Access</h3>
-                                <p class="card-text mb-4">Login to manage customer support tickets</p>
-                                <a href="{{ route('login') }}" class="btn btn-primary btn-xl">Staff Login</a>
+                        <div class="card shadow-sm">
+                            <div class="card-body text-center p-5">
+                                <h3 class="mb-4">Staff Access</h3>
+                                <p class="text-muted mb-4">Manage support tickets</p>
+                                <a href="{{ route('login') }}" class="btn btn-primary btn-lg px-5">Staff Login</a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Customer Section -->
+                    <!-- customer Section -->
                     <div class="col-md-5 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body text-center">
-                                <h3 class="card-title mb-4">Customer Access</h3>
-                                <p class="card-text mb-4">Submit and track your support tickets</p>
-                                @if(Route::has('customer.login'))
-                                    <a href="{{ route('customer.login') }}" class="btn btn-success btn-xl mb-3">Customer Login</a>
-                                    <div>
-                                        <a href="{{ route('customer.register') }}" class="btn btn-link">New Customer? Register here</a>
-                                    </div>
-                                @endif
+                        <div class="card shadow-sm">
+                            <div class="card-body text-center p-5">
+                                <h3 class="mb-4">Customer Access</h3>
+                                <p class="text-muted mb-4">Submit and track tickets</p>
+                                <a href="{{ route('customer.login') }}" class="btn btn-success btn-lg px-5 mb-3">Customer Login</a>
+                                <div>
+                                    <a href="{{ route('customer.register') }}" class="text-decoration-none">New customer? Register here</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -51,7 +42,7 @@
             </div>
         </div>
     </div>
-
+    
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

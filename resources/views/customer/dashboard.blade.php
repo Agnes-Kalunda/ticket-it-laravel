@@ -14,8 +14,8 @@
                         </div>
                     @endif
 
-                    <p>Welcome, {{ $customer->name }}!</p>
-                    <p>Username: {{ $customer->username }}</p>
+                    <p>Welcome, {{ $customer->username }}!</p>
+                   
                     <p>Email: {{ $customer->email }}</p>
                     
                     <div class="mt-4">
@@ -23,7 +23,7 @@
                         <ul class="list-unstyled">
                             <li><a href="#" class="btn btn-primary mb-2">Submit New Ticket</a></li>
                             <li><a href="#" class="btn btn-info mb-2">View My Tickets</a></li>
-                            <li><a href="#" class="btn btn-secondary">Manage Profile</a></li>
+                            <!-- <li><a href="#" class="btn btn-secondary">Manage Profile</a></li> -->
                         </ul>
                     </div>
                 </div>
