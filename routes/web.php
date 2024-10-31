@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,3 +26,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 // customer auth routes
 Route::get('customer/login', 'Auth\CustomerLoginController@showLoginForm')->name('customer.login');
 Route::post('customer/login', 'Auth\CustomerLoginController@login');
+
+
+// dashboard routes
+Route::get('/dashboard', 'UserDashboardController@index')->name('user.dashboard')->middleware('auth');
+Route::get('/customer/dashboard', 'CustomerDashboardController@index')->name('customer.dashboard')->middleware('auth:customer');
