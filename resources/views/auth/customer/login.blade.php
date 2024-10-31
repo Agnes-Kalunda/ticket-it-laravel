@@ -57,11 +57,9 @@
                                     {{ __('Login') }}
                                 </button>
 
-                                @if (Route::has('customer.register'))
-                                    <a class="btn btn-link" href="{{ route('customer.register') }}">
-                                        {{ __('Register as Customer') }}
-                                    </a>
-                                @endif
+                                <a href="{{ route('customer.register') }}" class="btn btn-link">
+                                    {{ __('New Customer? Register here') }}
+                                </a>
                             </div>
                         </div>
                     </form>
