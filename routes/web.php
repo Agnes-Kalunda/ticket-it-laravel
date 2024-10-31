@@ -15,10 +15,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// user authentication routes
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// customer auth routes
+Route::get('customer/login', 'Auth\CustomerLoginController@showLoginForm')->name('customer.login');
+Route::post('customer/login', 'Auth\CustomerLoginController@login');
