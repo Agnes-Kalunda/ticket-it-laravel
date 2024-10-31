@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
+    if(Auth::check()){
+        return redirect()->route('user.dashboard');
+    }
+    if(Auth::guard('customer')->check()){
+        return redirect()->route('customer.dashboard');
+    }
+    
     return view('welcome');
 });
 // user routes - login
