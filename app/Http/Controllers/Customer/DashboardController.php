@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Ticket\Ticketit\Models\Ticket;
 
 class DashboardController extends Controller
 {
@@ -14,6 +15,9 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return view('customer.dashboard', ['customer' => auth('customer')->user()]);
+        $customer = auth('customer')->user();
+        $tickets = $customer->tickets()->latest()->take(5)->get();
+
+        return view('customer.dashboard', compact('customer', 'tickets'));
     }
 }

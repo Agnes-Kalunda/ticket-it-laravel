@@ -2,51 +2,58 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Ticket\Ticketit\Models\Ticket;
 
 class User extends Authenticatable
 {
     use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'name', 'email', 'password',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password', 'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        // boolean casts for ticketit columns
+        'ticketit_admin' => 'boolean',
+        'ticketit_agent' => 'boolean'
     ];
 
-    public function tickets(){
-        return $this->hasMany('Ticket\Ticketit\Models\Ticket', 'agent_id');
-
+    /**
+     * Check if user is a ticketit admin
+     */
+    public function isAdmin()
+    {
+        return (bool) $this->ticketit_admin;
     }
 
-    public function isAdmin(){
-        return $this->ticketit_admin;
+    /**
+     * Check if user is a ticketit agent
+     */
+    public function isAgent()
+    {
+        return (bool) $this->ticketit_agent;
     }
 
-    public function isAgent(){
-        return $this->ticketit_agent;
+    /**
+     * Get tickets assigned to this user as agent
+     */
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class, 'agent_id');
+    }
+
+    /**
+     * Get tickets created by this user
+     */
+    public function createdTickets()
+    {
+        return $this->hasMany(Ticket::class, 'user_id');
     }
 }
