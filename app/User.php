@@ -36,4 +36,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function tickets(){
+        return $this->hasMany('Ticket\Ticketit\Models\Ticket', 'agent_id');
+
+    }
+
+    public function isAdmin(){
+        return $this->ticketit_admin;
+    }
+
+    public function isAgent(){
+        return $this->ticketit_agent;
+    }
 }

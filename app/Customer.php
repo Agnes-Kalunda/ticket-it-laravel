@@ -19,4 +19,10 @@ class Customer extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    // ticket relationship
+
+    public function tickets(){
+        return $this->hasMany('Ticket\Ticketit\Models\Ticket', 'customer_id');
+    }
 }
