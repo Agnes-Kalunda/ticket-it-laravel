@@ -14,6 +14,8 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+          // register the package's controller namespace
+          $this->app['router']->aliasMiddleware('ticket.controller', 'Ticket\Ticketit\Controllers');
     }
 
     /**
