@@ -19,13 +19,46 @@
                     <p>Email: {{ $customer->email }}</p>
                     
                     <div class="mt-4">
-                        <h5>Quick Actions</h5>
+                        <h5>Support Tickets</h5>
                         <ul class="list-unstyled">
-                            <li><a href="#" class="btn btn-primary mb-2">Submit New Ticket</a></li>
-                            <li><a href="#" class="btn btn-info mb-2">View My Tickets</a></li>
-                            <!-- <li><a href="#" class="btn btn-secondary">Manage Profile</a></li> -->
+                            <li><a href="{{ route('customer.tickets.create') }}" class="btn btn-primary mb-2">Submit New Ticket</a></li>
+                            <li><a href="{{ route('customer.tickets.index') }}" class="btn btn-info mb-2">View My Tickets</a></li>
                         </ul>
                     </div>
+
+                    @if(isset($tickets) && $tickets->count() > 0)
+                    <div class="mt-4">
+                        <h5>Recent Tickets</h5>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Subject</th>
+                                        <th>Last Updated</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($tickets as $ticket)
+                                    <tr>
+                                        <td>{{ $ticket->id }}</td>
+                                        <td>
+                                            <a href="{{ route('customer.tickets.show', $ticket->id) }}">
+                                                {{ $ticket->subject }}
+                                            </a>
+                                        </td>
+                                        <td>{{ $ticket->updated_at ? $ticket->updated_at->diffForHumans() : 'N/A' }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @else
+                        <div class="mt-4">
+                            <p class="text-muted">No tickets found.</p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
