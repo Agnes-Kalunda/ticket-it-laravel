@@ -21,6 +21,13 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', 'User\DashboardController@index')->name('user.dashboard');
     Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+
+
+    // User Management Routes - Only for admins
+    Route::middleware('admin')->group(function() {
+        Route::resource('users', 'UsersController');
+    });
+    
 });
 
 // Customer Routes

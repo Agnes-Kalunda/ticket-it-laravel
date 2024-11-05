@@ -23,6 +23,14 @@ class User extends Authenticatable
         'ticketit_agent' => 'boolean'
     ];
 
+    public static function getRoles(){
+        return[
+            'admin' => 'Administrator',
+            'agent' => 'Support Agent',
+            'user' => 'Regular User'
+        ];
+    }
+
     public function isAdmin()
     {
         return $this->ticketit_admin;

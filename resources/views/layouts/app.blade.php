@@ -20,7 +20,22 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                   
                     <ul class="navbar-nav mr-auto">
+                        @if(Auth::guard('web')->check())
+                            @if(Auth::user()->ticketit_admin)
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('staff.tickets.index') }}">Tickets</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('users.index') }}">Users</a>
+                                </li>
+                            @elseif(Auth::user()->ticketit_agent)
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('staff.tickets.index') }}">My Tickets</a>
+                                </li>
+                            @endif
+                        @endif
                     </ul>
 
                     <ul class="navbar-nav ml-auto">
@@ -35,6 +50,19 @@
                                     <a class="dropdown-item" href="{{ route('user.dashboard') }}">
                                         Dashboard
                                     </a>
+                                    @if(Auth::user()->ticketit_admin)
+                                        <a class="dropdown-item" href="{{ route('users.index') }}">
+                                            Manage Users
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('staff.tickets.index') }}">
+                                            All Tickets
+                                        </a>
+                                    @elseif(Auth::user()->ticketit_agent)
+                                        <a class="dropdown-item" href="{{ route('staff.tickets.index') }}">
+                                            My Tickets
+                                        </a>
+                                    @endif
+                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

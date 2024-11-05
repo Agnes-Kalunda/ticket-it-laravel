@@ -5,7 +5,9 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Staff Dashboard</div>
+                <div class="card-header">
+                    <h5 class="mb-0">Staff Dashboard</h5>
+                </div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -14,54 +16,48 @@
                         </div>
                     @endif
 
-                    @if (isset($error))
-                        <div class="alert alert-danger" role="alert">
-                            {{ $error }}
-                        </div>
-                    @endif
-
-                    <p>Welcome, {{ $user->name }}!</p>
+                    <h4 class="mb-4">Welcome, {{ $user->name }}!</h4>
                     
                     @if($isAdmin || $isAgent)
                         <!-- Stats Cards -->
                         <div class="row mb-4">
                             <div class="col-md-3">
-                                <div class="card bg-primary text-white">
-                                    <div class="card-body">
-                                        <h6 class="card-title">Total Tickets</h6>
-                                        <p class="card-text h2">{{ $stats['total'] }}</p>
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body bg-primary text-white rounded">
+                                        <h6 class="text-uppercase">Total Tickets</h6>
+                                        <h2 class="mb-0">{{ $stats['total'] }}</h2>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="card bg-info text-white">
-                                    <div class="card-body">
-                                        <h6 class="card-title">Open Tickets</h6>
-                                        <p class="card-text h2">{{ $stats['open'] }}</p>
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body bg-info text-white rounded">
+                                        <h6 class="text-uppercase">Open Tickets</h6>
+                                        <h2 class="mb-0">{{ $stats['open'] }}</h2>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="card bg-warning text-white">
-                                    <div class="card-body">
-                                        <h6 class="card-title">Pending</h6>
-                                        <p class="card-text h2">{{ $stats['pending'] }}</p>
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body bg-warning text-white rounded">
+                                        <h6 class="text-uppercase">Pending</h6>
+                                        <h2 class="mb-0">{{ $stats['pending'] }}</h2>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="card bg-danger text-white">
-                                    <div class="card-body">
-                                        <h6 class="card-title">High Priority</h6>
-                                        <p class="card-text h2">{{ $stats['high_priority'] }}</p>
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body bg-danger text-white rounded">
+                                        <h6 class="text-uppercase">High Priority</h6>
+                                        <h2 class="mb-0">{{ $stats['high_priority'] }}</h2>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         @if($tickets->count() > 0)
-                            <div class="card mt-4">
-                                <div class="card-header">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-white">
                                     <h5 class="mb-0">Recent Tickets</h5>
                                 </div>
                                 <div class="card-body">
@@ -69,13 +65,13 @@
                                         <table class="table table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
-                                                    <th>Customer</th>
-                                                    <th>Subject</th>
-                                                    <th>Priority</th>
-                                                    <th>Status</th>
-                                                    <th>Created</th>
-                                                    <th>Actions</th>
+                                                    <th width="5%">ID</th>
+                                                    <th width="20%">Customer</th>
+                                                    <th width="30%">Subject</th>
+                                                    <th width="15%">Priority</th>
+                                                    <th width="15%">Status</th>
+                                                    <th width="10%">Created</th>
+                                                    <th width="5%">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -83,21 +79,26 @@
                                                 <tr>
                                                     <td>{{ $ticket->id }}</td>
                                                     <td>{{ $ticket->customer_name ?? 'N/A' }}</td>
-                                                    <td>{{ $ticket->subject }}</td>
                                                     <td>
-                                                        <span class="badge badge-{{ strtolower($ticket->priority_name ?? 'secondary') }}">
-                                                            {{ $ticket->priority_name ?? 'Unknown' }}
+                                                        <a href="{{ route('staff.tickets.show', $ticket->id) }}" 
+                                                           class="text-decoration-none">
+                                                            {{ $ticket->subject }}
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge rounded-pill {{ getPriorityClass($ticket->priority_id) }}">
+                                                            {{ getPriorityName($ticket->priority_id) }}
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <span class="badge" style="background-color: {{ $ticket->status_color ?? '#6c757d' }}">
-                                                            {{ $ticket->status_name ?? 'Unknown' }}
+                                                        <span class="badge rounded-pill {{ getStatusClass($ticket->status_id) }}">
+                                                            {{ getStatusName($ticket->status_id) }}
                                                         </span>
                                                     </td>
                                                     <td>{{ \Carbon\Carbon::parse($ticket->created_at)->diffForHumans() }}</td>
                                                     <td>
                                                         <a href="{{ route('staff.tickets.show', $ticket->id) }}" 
-                                                           class="btn btn-sm btn-primary">
+                                                           class="btn btn-sm btn-outline-primary">
                                                             View
                                                         </a>
                                                     </td>
@@ -109,7 +110,7 @@
                                 </div>
                             </div>
                         @else
-                            <div class="alert alert-info mt-4">
+                            <div class="alert alert-info">
                                 No tickets found.
                             </div>
                         @endif
@@ -126,16 +127,89 @@
 
 @push('styles')
 <style>
-.card-body .h2 {
-    margin-bottom: 0;
+.card {
+    border-radius: 0.5rem;
+}
+.card-header {
+    border-bottom: 1px solid rgba(0,0,0,.125);
 }
 .badge {
-    padding: 0.4em 0.8em;
-    font-size: 0.9em;
+    padding: 0.5em 1em;
+    font-weight: 500;
+}
+.badge.bg-low {
+    background-color: #28a745;
+    color: white;
+}
+.badge.bg-medium {
+    background-color: #ffc107;
+    color: black;
+}
+.badge.bg-high {
+    background-color: #dc3545;
+    color: white;
+}
+.badge.bg-open {
+    background-color: #17a2b8;
+    color: white;
+}
+.badge.bg-pending {
+    background-color: #ffc107;
+    color: black;
+}
+.badge.bg-resolved {
+    background-color: #28a745;
+    color: white;
+}
+.badge.bg-closed {
+    background-color: #6c757d;
+    color: white;
 }
 .table td {
     vertical-align: middle;
 }
+.btn-outline-primary {
+    padding: 0.25rem 0.75rem;
+}
 </style>
 @endpush
-@endsection
+
+@php
+function getStatusName($statusId) {
+    $statuses = [
+        1 => 'Open',
+        2 => 'Pending',
+        3 => 'Resolved',
+        4 => 'Closed'
+    ];
+    return $statuses[$statusId] ?? 'Unknown';
+}
+
+function getStatusClass($statusId) {
+    $classes = [
+        1 => 'bg-open',
+        2 => 'bg-pending',
+        3 => 'bg-resolved',
+        4 => 'bg-closed'
+    ];
+    return $classes[$statusId] ?? 'bg-secondary';
+}
+
+function getPriorityName($priorityId) {
+    $priorities = [
+        1 => 'Low',
+        2 => 'Medium',
+        3 => 'High'
+    ];
+    return $priorities[$priorityId] ?? 'Unknown';
+}
+
+function getPriorityClass($priorityId) {
+    $classes = [
+        1 => 'bg-low',
+        2 => 'bg-medium',
+        3 => 'bg-high'
+    ];
+    return $classes[$priorityId] ?? 'bg-secondary';
+}
+@endphp
