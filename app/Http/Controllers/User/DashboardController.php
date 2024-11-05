@@ -3,54 +3,94 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\User; // Add this import
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Ticket\Ticketit\Models\Ticket;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
-    /**
-     * new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the user dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
-        /** @var User $user */
-        $user = auth()->user();
-        
-        /** @var Collection $tickets */
+        $user = Auth::user();
         $tickets = collect([]);
 
-        // check if the ticketit tables exist
-        if (DB::getSchemaBuilder()->hasTable('ticketit')) {
-            if ($user->ticketit_admin) {
-                $tickets = Ticket::latest()->take(5)->get();
-            } elseif ($user->ticketit_agent) {
-                $tickets = Ticket::where('agent_id', $user->id)
-                    ->latest()
-                    ->take(5)
-                    ->get();
-            }
-        }
+        try {
+            // Check if user has any ticket management permissions
+            if ($user->ticketit_admin || $user->ticketit_agent) {
+                $query = DB::table('ticketit')
+                    ->leftJoin('ticketit_statuses', 'ticketit.status_id', '=', 'ticketit_statuses.id')
+                    ->leftJoin('ticketit_priorities', 'ticketit.priority_id', '=', 'ticketit_priorities.id')
+                    ->leftJoin('ticketit_categories', 'ticketit.category_id', '=', 'ticketit_categories.id')
+                    ->leftJoin('customers', 'ticketit.customer_id', '=', 'customers.id')
+                    ->select([
+                        'ticketit.*',
+                        'ticketit_statuses.name as status_name',
+                        'ticketit_statuses.color as status_color',
+                        'ticketit_priorities.name as priority_name',
+                        'ticketit_priorities.color as priority_color',
+                        'ticketit_categories.name as category_name',
+                        'customers.name as customer_name'
+                    ]);
 
-        return view('user.dashboard', [
-            'user' => $user,
-            'tickets' => $tickets,
-            'isAdmin' => $user->ticketit_admin ?? false,
-            'isAgent' => $user->ticketit_agent ?? false
-        ]);
+                // If user is an agent but not admin, only show their tickets and unassigned ones
+                if ($user->ticketit_agent && !$user->ticketit_admin) {
+                    $query->where(function($q) use ($user) {
+                        $q->where('agent_id', $user->id)
+                          ->orWhereNull('agent_id');
+                    });
+                }
+
+                $tickets = $query->orderBy('ticketit.created_at', 'desc')->get();
+
+                Log::info('Tickets loaded', [
+                    'user_id' => $user->id,
+                    'is_admin' => $user->ticketit_admin,
+                    'is_agent' => $user->ticketit_agent,
+                    'ticket_count' => $tickets->count()
+                ]);
+            }
+
+            $stats = [
+                'total' => $tickets->count(),
+                'open' => $tickets->where('status_id', 1)->count(),
+                'pending' => $tickets->where('status_id', 2)->count(),
+                'resolved' => $tickets->where('status_id', 3)->count(),
+                'high_priority' => $tickets->where('priority_id', 3)->count()
+            ];
+
+            return view('user.dashboard', [
+                'user' => $user,
+                'tickets' => $tickets,
+                'stats' => $stats,
+                'isAdmin' => $user->ticketit_admin,
+                'isAgent' => $user->ticketit_agent
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error in dashboard:', [
+                'error' => $e->getMessage(),
+                'user_id' => $user->id
+            ]);
+
+            return view('user.dashboard', [
+                'user' => $user,
+                'tickets' => collect([]),
+                'stats' => [
+                    'total' => 0,
+                    'open' => 0,
+                    'pending' => 0,
+                    'resolved' => 0,
+                    'high_priority' => 0
+                ],
+                'isAdmin' => $user->ticketit_admin,
+                'isAgent' => $user->ticketit_agent,
+                'error' => 'Error loading tickets. Please try again.'
+            ]);
+        }
     }
 }

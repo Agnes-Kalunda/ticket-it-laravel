@@ -4,14 +4,13 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Ticket\Ticketit\Models\Ticket;
 
 class User extends Authenticatable
 {
     use Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'ticketit_admin', 'ticketit_agent'
     ];
 
     protected $hidden = [
@@ -20,40 +19,55 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        // boolean casts for ticketit columns
         'ticketit_admin' => 'boolean',
         'ticketit_agent' => 'boolean'
     ];
 
-    /**
-     * Check if user is a ticketit admin
-     */
     public function isAdmin()
     {
-        return (bool) $this->ticketit_admin;
+        return $this->ticketit_admin;
     }
 
-    /**
-     * Check if user is a ticketit agent
-     */
     public function isAgent()
     {
-        return (bool) $this->ticketit_agent;
+        return $this->ticketit_agent;
     }
 
-    /**
-     * Get tickets assigned to this user as agent
-     */
-    public function tickets()
+    public function canManageTickets()
     {
-        return $this->hasMany(Ticket::class, 'agent_id');
+        return $this->isAdmin() || $this->isAgent();
     }
 
-    /**
-     * Get tickets created by this user
-     */
-    public function createdTickets()
+    public function assignedTickets()
     {
-        return $this->hasMany(Ticket::class, 'user_id');
+        return $this->hasMany('Ticket\Ticketit\Models\Ticket', 'agent_id');
+    }
+
+    public function getAssignableTicketsQuery()
+    {
+        $query = \Ticket\Ticketit\Models\Ticket::query();
+        
+        if ($this->isAdmin()) {
+            return $query; // Admin can see all tickets
+        }
+        
+        if ($this->isAgent()) {
+            return $query->where(function($q) {
+                $q->where('agent_id', $this->id)
+                  ->orWhereNull('agent_id'); // Agents can see their tickets and unassigned ones
+            });
+        }
+        
+        return $query->where('agent_id', $this->id); // Regular users see nothing
+    }
+
+    public function scopeAgents($query)
+    {
+        return $query->where('ticketit_agent', true);
+    }
+
+    public function scopeAdmins($query)
+    {
+        return $query->where('ticketit_admin', true);
     }
 }
