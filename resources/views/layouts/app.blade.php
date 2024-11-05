@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -25,23 +24,46 @@
                     </ul>
 
                     <ul class="navbar-nav ml-auto">
-                        @auth
-                            <!-- staff logged in -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                        @if(Auth::guard('web')->check())
+                            <!-- Staff logged in -->
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }}
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('user.dashboard') }}">
+                                        Dashboard
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
                             </li>
-                        @else
-                            @auth('customer')
-                                <!-- customer logged in -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('customer.logout') }}"
+                        @elseif(Auth::guard('customer')->check())
+                            <!-- Customer logged in -->
+                            <li class="nav-item dropdown">
+                                <a id="customerDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::guard('customer')->user()->name }}
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="customerDropdown">
+                                    <a class="dropdown-item" href="{{ route('customer.dashboard') }}">
+                                        Dashboard
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('customer.tickets.create') }}">
+                                        Submit Ticket
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('customer.tickets.index') }}">
+                                        View Tickets
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{ route('customer.logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('customer-logout-form').submit();">
                                         {{ __('Logout') }}
@@ -49,15 +71,39 @@
                                     <form id="customer-logout-form" action="{{ route('customer.logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
-                                </li>
-                            @endauth
-                        @endauth
+                                </div>
+                            </li>
+                        @else
+                            <!-- No one logged in -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">Staff Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('customer.login') }}">Customer Login</a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </div>
         </nav>
 
         <main class="py-4">
+            @if(session('status'))
+                <div class="container">
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="container">
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                </div>
+            @endif
+
             @yield('content')
         </main>
     </div>

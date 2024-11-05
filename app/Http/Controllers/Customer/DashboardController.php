@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
-use App\Customer; 
+use App\Customer;
 use Illuminate\Http\Request;
 use Ticket\Ticketit\Models\Ticket;
 use Illuminate\Support\Facades\DB;

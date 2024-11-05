@@ -13,7 +13,7 @@
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "laravel/ui": "1.*",
-        "ticket/ticketit": "^2.0"
+        "ticket/ticketit": "^5.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
