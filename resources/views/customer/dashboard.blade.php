@@ -23,7 +23,7 @@
                         <h5>Support Tickets</h5>
                         <ul class="list-unstyled">
                             <li><a href="{{ route('customer.tickets.create') }}" class="btn btn-primary mb-2">Submit New Ticket</a></li>
-                            <li><a href="{{ route('customer.tickets.index') }}" class="btn btn-info mb-2">View My Tickets</a></li>
+
                         </ul>
                     </div>
 
