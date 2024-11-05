@@ -1,12 +1,11 @@
 # ticket-it-laravel
 
-# Ticketit - Laravel Support Ticket System
 
 A Laravel app with dual authentication support for both staff members (Users) and customers. This app is designed to handle support tickets between customers and staff members efficiently, while making use of the ticketit package .
 
 ## Features
 
-- Dual authentication system (Staff/Customers)
+- Dual authentication system (Staff(Users)/Customers)
 - Auto-assignment of agents
 - Ticket categories and priorities
 - Custom permission system
@@ -22,8 +21,8 @@ A Laravel app with dual authentication support for both staff members (Users) an
 
 1. Clone the Repo:
 ```bash
-git clone 
-cd 
+git clone https://github.com/Agnes-Kalunda/ticket-it-laravel.git
+cd ticket-it-laravel
 ```
 
 2. Configure your .env file with the database credentials:
