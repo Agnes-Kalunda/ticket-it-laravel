@@ -38,12 +38,11 @@ Route::group(['prefix' => 'customer'], function () {
     });
 });
 
-
 Route::get('/home', function() {
     return redirect()->route('user.dashboard');
 })->name('home');
 
 // Ticketit Routes
-if (file_exists(base_path('routes/ticketit/routes.php'))) {
-    require base_path('routes/ticketit/routes.php');
+if (file_exists(base_path('routes/ticketit.php'))) {
+    require base_path('routes/ticketit.php');
 }

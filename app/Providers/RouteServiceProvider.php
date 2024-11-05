@@ -38,7 +38,7 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapTicketitRoutes()
     {
-        $ticketitRoutes = base_path('routes/ticketit/routes.php');
+        $ticketitRoutes = base_path('routes/ticketit.php');
         
         if (file_exists($ticketitRoutes)) {
             Route::middleware('web')

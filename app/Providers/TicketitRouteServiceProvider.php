@@ -9,9 +9,9 @@ class TicketitRouteServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        if (file_exists(base_path('routes/ticketit/routes.php'))) {
+        if (file_exists(base_path('routes/ticketit.php'))) {
             Route::middleware('web')
-                ->group(base_path('routes/ticketit/routes.php'));
+                ->group(base_path('routes/ticketit.php'));
         }
     }
 
