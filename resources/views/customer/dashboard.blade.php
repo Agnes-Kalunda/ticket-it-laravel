@@ -1,3 +1,4 @@
+{{-- resources/views/customer/dashboard.blade.php --}}
 @extends('layouts.app')
 
 @section('content')
@@ -35,7 +36,8 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Subject</th>
-                                        <th>Last Updated</th>
+                                        <th>Status</th>
+                                        <th>Created</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -43,11 +45,20 @@
                                     <tr>
                                         <td>{{ $ticket->id }}</td>
                                         <td>
-                                            <a href="{{ route('customer.tickets.show', $ticket->id) }}">
+                                            <a href="{{ route('customer.tickets.index') }}">
                                                 {{ $ticket->subject }}
                                             </a>
                                         </td>
-                                        <td>{{ $ticket->updated_at ? $ticket->updated_at->diffForHumans() : 'N/A' }}</td>
+                                        <td>
+                                            @if(isset($ticket->status))
+                                                <span class="badge" style="background-color: {{ $ticket->status->color ?? '#6c757d' }}">
+                                                    {{ $ticket->status->name ?? 'Unknown' }}
+                                                </span>
+                                            @else
+                                                <span class="badge bg-secondary">Unknown</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $ticket->created_at ? $ticket->created_at->diffForHumans() : 'N/A' }}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -64,4 +75,14 @@
         </div>
     </div>
 </div>
+
+@push('styles')
+<style>
+.badge {
+    color: white;
+    padding: 0.35em 0.65em;
+    font-size: 0.9em;
+}
+</style>
+@endpush
 @endsection

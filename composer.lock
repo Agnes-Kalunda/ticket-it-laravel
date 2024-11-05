@@ -4458,16 +4458,16 @@
         },
         {
             "name": "ticket/ticketit",
-            "version": "5.0.1",
+            "version": "5.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Agnes-Kalunda/ticketit.git",
-                "reference": "310c746380015ccd7d46955af587f96d1db4097d"
+                "reference": "9693435098f58d201360b4b3b59219aa36eefc2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Agnes-Kalunda/ticketit/zipball/310c746380015ccd7d46955af587f96d1db4097d",
-                "reference": "310c746380015ccd7d46955af587f96d1db4097d",
+                "url": "https://api.github.com/repos/Agnes-Kalunda/ticketit/zipball/9693435098f58d201360b4b3b59219aa36eefc2b",
+                "reference": "9693435098f58d201360b4b3b59219aa36eefc2b",
                 "shasum": ""
             },
             "require": {
@@ -4516,9 +4516,9 @@
                 "your-keywords"
             ],
             "support": {
-                "source": "https://github.com/Agnes-Kalunda/ticketit/tree/v5.0.1"
+                "source": "https://github.com/Agnes-Kalunda/ticketit/tree/v5.0.4"
             },
-            "time": "2024-11-05T06:19:46+00:00"
+            "time": "2024-11-05T07:43:27+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
