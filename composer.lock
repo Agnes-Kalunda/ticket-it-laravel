@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4b2b3b904c18abbc37c1a46084486955",
+    "content-hash": "d1f3198a826d28080b23feae254442ad",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -4458,16 +4458,16 @@
         },
         {
             "name": "ticket/ticketit",
-            "version": "5.0.9",
+            "version": "6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Agnes-Kalunda/ticketit.git",
-                "reference": "c0d7d7627e61cbfd67d906a57b47a6b520df78f5"
+                "reference": "aab8a70affaf9665ee818f45154dd4afd2b13460"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Agnes-Kalunda/ticketit/zipball/c0d7d7627e61cbfd67d906a57b47a6b520df78f5",
-                "reference": "c0d7d7627e61cbfd67d906a57b47a6b520df78f5",
+                "url": "https://api.github.com/repos/Agnes-Kalunda/ticketit/zipball/aab8a70affaf9665ee818f45154dd4afd2b13460",
+                "reference": "aab8a70affaf9665ee818f45154dd4afd2b13460",
                 "shasum": ""
             },
             "require": {
@@ -4516,9 +4516,9 @@
                 "your-keywords"
             ],
             "support": {
-                "source": "https://github.com/Agnes-Kalunda/ticketit/tree/v5.0.9"
+                "source": "https://github.com/Agnes-Kalunda/ticketit/tree/v6.0.0"
             },
-            "time": "2024-11-05T22:43:43+00:00"
+            "time": "2024-11-06T02:14:50+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
