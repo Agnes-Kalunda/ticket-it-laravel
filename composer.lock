@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1f3198a826d28080b23feae254442ad",
+    "content-hash": "61dca6367e1c37fe37eb3e5a04d59ee7",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -4459,16 +4459,10 @@
         {
             "name": "ticket/ticketit",
             "version": "6.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Agnes-Kalunda/ticketit.git",
-                "reference": "aab8a70affaf9665ee818f45154dd4afd2b13460"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Agnes-Kalunda/ticketit/zipball/aab8a70affaf9665ee818f45154dd4afd2b13460",
-                "reference": "aab8a70affaf9665ee818f45154dd4afd2b13460",
-                "shasum": ""
+                "type": "path",
+                "url": "../ticketit",
+                "reference": "362f3ba98c9a8dbacde66445364b5d0fa46acd93"
             },
             "require": {
                 "doctrine/dbal": "^2.10",
@@ -4489,7 +4483,8 @@
                 "laravel": {
                     "providers": [
                         "Ticket\\Ticketit\\TicketitServiceProvider"
-                    ]
+                    ],
+                    "dont-discover": []
                 }
             },
             "autoload": {
@@ -4497,7 +4492,6 @@
                     "Ticket\\Ticketit\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4515,10 +4509,9 @@
                 "ticket",
                 "your-keywords"
             ],
-            "support": {
-                "source": "https://github.com/Agnes-Kalunda/ticketit/tree/v6.0.0"
-            },
-            "time": "2024-11-06T02:14:50+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

@@ -1,5 +1,55 @@
 @extends('layouts.app')
 
+
+@section('styles')
+<style>
+.card {
+    border-radius: 0.5rem;
+}
+.card-header {
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+.badge {
+    padding: 0.5em 1em;
+    font-weight: 500;
+}
+.badge.bg-low {
+    background-color: #28a745;
+    color: white;
+}
+.badge.bg-medium {
+    background-color: #ffc107;
+    color: black;
+}
+.badge.bg-high {
+    background-color: #dc3545;
+    color: white;
+}
+.badge.bg-open {
+    background-color: #17a2b8;
+    color: white;
+}
+.badge.bg-pending {
+    background-color: #ffc107;
+    color: black;
+}
+.badge.bg-resolved {
+    background-color: #28a745;
+    color: white;
+}
+.badge.bg-closed {
+    background-color: #6c757d;
+    color: white;
+}
+.table td {
+    vertical-align: middle;
+}
+.btn-outline-primary {
+    padding: 0.25rem 0.75rem;
+}
+</style>
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -125,54 +175,8 @@
     </div>
 </div>
 
-@push('styles')
-<style>
-.card {
-    border-radius: 0.5rem;
-}
-.card-header {
-    border-bottom: 1px solid rgba(0,0,0,.125);
-}
-.badge {
-    padding: 0.5em 1em;
-    font-weight: 500;
-}
-.badge.bg-low {
-    background-color: #28a745;
-    color: white;
-}
-.badge.bg-medium {
-    background-color: #ffc107;
-    color: black;
-}
-.badge.bg-high {
-    background-color: #dc3545;
-    color: white;
-}
-.badge.bg-open {
-    background-color: #17a2b8;
-    color: white;
-}
-.badge.bg-pending {
-    background-color: #ffc107;
-    color: black;
-}
-.badge.bg-resolved {
-    background-color: #28a745;
-    color: white;
-}
-.badge.bg-closed {
-    background-color: #6c757d;
-    color: white;
-}
-.table td {
-    vertical-align: middle;
-}
-.btn-outline-primary {
-    padding: 0.25rem 0.75rem;
-}
-</style>
-@endpush
+@endsection
+
 
 @php
 function getStatusName($statusId) {
