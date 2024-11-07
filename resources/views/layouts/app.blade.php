@@ -24,9 +24,9 @@
                     <ul class="navbar-nav mr-auto">
                         @if(Auth::guard('web')->check())
                             @if(Auth::user()->ticketit_admin)
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a class="nav-link" href="{{ route('staff.tickets.index') }}">Tickets</a>
-                                </li>
+                                </li> -->
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('users.index') }}">Users</a>
                                 </li>
@@ -54,9 +54,9 @@
                                         <a class="dropdown-item" href="{{ route('users.index') }}">
                                             Manage Users
                                         </a>
-                                        <a class="dropdown-item" href="{{ route('staff.tickets.index') }}">
+                                        <!-- <a class="dropdown-item" href="{{ route('staff.tickets.index') }}">
                                             All Tickets
-                                        </a>
+                                        </a> -->
                                     @elseif(Auth::user()->ticketit_agent)
                                         <a class="dropdown-item" href="{{ route('staff.tickets.index') }}">
                                             My Tickets
