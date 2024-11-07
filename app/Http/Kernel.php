@@ -64,6 +64,10 @@ class Kernel extends HttpKernel
         'customer.auth' => \App\Http\Middleware\RedirectIfNotCustomer::class,
         'customer.guest' => \App\Http\Middleware\RedirectIfCustomerAuthenticated::class,
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'agent' => \App\Http\Middleware\AgentMiddleware::class,
+        'staff' => \App\Http\Middleware\StaffMiddleware::class,
+    
+        
     ];
 
     /**

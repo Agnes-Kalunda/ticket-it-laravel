@@ -69,10 +69,26 @@ class User extends Authenticatable
         return $query->where('agent_id', $this->id); // Regular users see nothing
     }
 
+    public function getAccessibleTickets()
+    {
+        if ($this->isAdmin()) {
+            return \Ticket\Ticketit\Models\Ticket::with(['customer', 'status', 'priority']);
+        }
+        
+        if ($this->isAgent()) {
+            return \Ticket\Ticketit\Models\Ticket::with(['customer', 'status', 'priority'])
+                ->where('agent_id', $this->id);
+        }
+        
+        return collect([]); // Regular users see no tickets
+    }
+
     public function scopeAgents($query)
     {
         return $query->where('ticketit_agent', true);
     }
+
+    
 
     public function scopeAdmins($query)
     {
