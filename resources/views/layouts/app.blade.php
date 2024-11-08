@@ -32,7 +32,7 @@
                                 </li>
                             @elseif(Auth::user()->ticketit_agent)
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('staff.tickets.index') }}">My Tickets</a>
+                                    <a class="nav-link" href="{{ route('staff.tickets.index') }}"></a>
                                 </li>
                             @endif
                         @endif
@@ -59,7 +59,7 @@
                                         </a> -->
                                     @elseif(Auth::user()->ticketit_agent)
                                         <a class="dropdown-item" href="{{ route('staff.tickets.index') }}">
-                                            My Tickets
+                                            <!-- My Tickets -->
                                         </a>
                                     @endif
                                     <div class="dropdown-divider"></div>
@@ -87,9 +87,9 @@
                                     <a class="dropdown-item" href="{{ route('customer.tickets.create') }}">
                                         Submit Ticket
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('customer.tickets.index') }}">
+                                    <!-- <a class="dropdown-item" href="{{ route('customer.tickets.index') }}">
                                         View Tickets
-                                    </a>
+                                    </a> -->
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('customer.logout') }}"
                                        onclick="event.preventDefault();

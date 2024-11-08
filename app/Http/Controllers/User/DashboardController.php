@@ -15,8 +15,6 @@ class DashboardController extends Controller
         $this->middleware('auth');
     }
 
-    
-
     public function index()
 {
     $user = Auth::user();
@@ -29,7 +27,6 @@ class DashboardController extends Controller
                 ->leftJoin('ticketit_priorities', 'ticketit.priority_id', '=', 'ticketit_priorities.id')
                 ->leftJoin('ticketit_categories', 'ticketit.category_id', '=', 'ticketit_categories.id')
                 ->leftJoin('customers', 'ticketit.customer_id', '=', 'customers.id')
-                ->leftJoin('users as agents', 'ticketit.agent_id', '=', 'agents.id')
                 ->select([
                     'ticketit.*',
                     'ticketit_statuses.name as status_name',
@@ -37,47 +34,37 @@ class DashboardController extends Controller
                     'ticketit_priorities.name as priority_name',
                     'ticketit_priorities.color as priority_color',
                     'ticketit_categories.name as category_name',
-                    'customers.name as customer_name',
-                    'customers.email as customer_email',
-                    'agents.name as agent_name'
+                    'customers.name as customer_name'
                 ]);
 
-            // If user is agent but not admin, only show their tickets
+            // If user is an agent but not admin, only show their tickets
             if ($user->ticketit_agent && !$user->ticketit_admin) {
                 $query->where('agent_id', $user->id);
             }
 
             $tickets = $query->orderBy('ticketit.created_at', 'desc')->get();
 
-            // Get available agents for admin
-            $availableAgents = [];
-            if ($user->ticketit_admin) {
-                $availableAgents = User::where('ticketit_agent', true)
-                    ->select('id', 'name', 'email')
-                    ->withCount(['assignedTickets' => function($query) {
-                        $query->whereNull('completed_at');
-                    }])
-                    ->get();
-            }
-
-            // Calculate appropriate stats based on role
-            $stats = $user->ticketit_admin ? 
-                $this->getAdminStats($tickets) : 
-                $this->getAgentStats($tickets);
-
-            return view('user.dashboard', [
-                'user' => $user,
-                'tickets' => $tickets,
-                'stats' => $stats,
-                'isAdmin' => $user->ticketit_admin,
-                'isAgent' => $user->ticketit_agent,
-                'availableAgents' => $availableAgents ?? collect([])
-            ]);
+            $stats = [
+                'total' => $tickets->count(),
+                'open' => $tickets->where('status_id', 1)->count(),
+                'pending' => $tickets->where('status_id', 2)->count(),
+                'resolved' => $tickets->where('status_id', 3)->count(),
+                'high_priority' => $tickets->where('priority_id', 3)->count()
+            ];
         }
 
-        // Regular user view
         return view('user.dashboard', [
-            'user' => $user
+            'user' => $user,
+            'tickets' => $tickets,
+            'stats' => $stats ?? [
+                'total' => 0,
+                'open' => 0,
+                'pending' => 0,
+                'resolved' => 0,
+                'high_priority' => 0
+            ],
+            'isAdmin' => $user->ticketit_admin,
+            'isAgent' => $user->ticketit_agent
         ]);
 
     } catch (\Exception $e) {
@@ -86,30 +73,6 @@ class DashboardController extends Controller
             'user_id' => $user->id
         ]);
 
-        return view('user.dashboard', [
-            'user' => $user,
-            'error' => 'Error loading dashboard. Please try again.'
-        ]);
+        return redirect()->back()->with('error', 'Error loading dashboard.');
     }
-}
-
-protected function getAdminStats($tickets)
-{
-    return [
-        'total' => $tickets->count(),
-        'unassigned' => $tickets->whereNull('agent_id')->count(),
-        'open' => $tickets->where('status_id', 1)->count(),
-        'pending' => $tickets->where('status_id', 2)->count(),
-        'high_priority' => $tickets->where('priority_id', 3)->count()
-    ];
-}
-
-protected function getAgentStats($tickets)
-{
-    return [
-        'assigned' => $tickets->count(),
-        'my_open' => $tickets->where('status_id', 1)->count(),
-        'my_pending' => $tickets->where('status_id', 2)->count()
-    ];
-}
-}
+}}

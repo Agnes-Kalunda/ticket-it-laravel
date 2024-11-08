@@ -2,56 +2,63 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Manage Customer Tickets</h5>
-                    <div class="btn-group">
-                        <a href="{{ route('staff.tickets.index') }}" 
-                           class="btn btn-outline-primary {{ !request('filter') ? 'active' : '' }}">
-                            All
-                        </a>
-                        <a href="{{ route('staff.tickets.index', ['filter' => 'open']) }}" 
-                           class="btn btn-outline-warning {{ request('filter') === 'open' ? 'active' : '' }}">
-                            Open
-                        </a>
-                        <a href="{{ route('staff.tickets.index', ['filter' => 'in-progress']) }}" 
-                           class="btn btn-outline-info {{ request('filter') === 'in-progress' ? 'active' : '' }}">
-                            In Progress
-                        </a>
-                        <a href="{{ route('staff.tickets.index', ['filter' => 'closed']) }}" 
-                           class="btn btn-outline-success {{ request('filter') === 'closed' ? 'active' : '' }}">
-                            Closed
-                        </a>
-                    </div>
+                    <h5 class="mb-0">{{ $isAdmin ? 'All Tickets' : 'My Assigned Tickets' }}</h5>
                 </div>
 
                 <div class="card-body">
-                    @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                    <!-- Stats Row -->
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <h6 class="text-uppercase">Total Tickets</h6>
+                                    <h2 class="mb-0">{{ $stats['total'] }}</h2>
+                                </div>
+                            </div>
                         </div>
-                    @endif
+                        @if($isAdmin)
+                        <div class="col-md-3">
+                            <div class="card bg-warning text-dark">
+                                <div class="card-body">
+                                    <h6 class="text-uppercase">Unassigned</h6>
+                                    <h2 class="mb-0">{{ $stats['unassigned'] }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                        <div class="col-md-3">
+                            <div class="card bg-info text-white">
+                                <div class="card-body">
+                                    <h6 class="text-uppercase">Open</h6>
+                                    <h2 class="mb-0">{{ $stats['open'] }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-danger text-white">
+                                <div class="card-body">
+                                    <h6 class="text-uppercase">High Priority</h6>
+                                    <h2 class="mb-0">{{ $stats['high_priority'] }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    @if($tickets->isEmpty())
-                        <div class="text-center text-muted my-4">
-                            <p>No tickets found.</p>
-                        </div>
-                    @else
+                    <!-- Tickets Table -->
+                    @if($tickets->count() > 0)
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
                                         <th>Customer</th>
                                         <th>Subject</th>
-                                        <th>Status</th>
                                         <th>Priority</th>
-                                        <th>Category</th>
+                                        <th>Status</th>
                                         <th>Created</th>
                                         <th>Actions</th>
                                     </tr>
@@ -59,72 +66,35 @@
                                 <tbody>
                                     @foreach($tickets as $ticket)
                                         <tr>
-                                            <td>#{{ $ticket->id }}</td>
+                                            <td>{{ $ticket->id }}</td>
                                             <td>{{ $ticket->customer_name }}</td>
+                                            <td>{{ $ticket->subject }}</td>
                                             <td>
-                                                <a href="{{ route('staff.tickets.show', $ticket->id) }}"
-                                                   class="text-primary text-decoration-none">
-                                                    {{ $ticket->subject }}
-                                                </a>
+                                                <span class="badge bg-{{ strtolower($ticket->priority_name) }}">
+                                                    {{ $ticket->priority_name }}
+                                                </span>
                                             </td>
                                             <td>
                                                 <span class="badge" style="background-color: {{ $ticket->status_color }}">
                                                     {{ $ticket->status_name }}
                                                 </span>
                                             </td>
-                                            <td>
-                                                <span class="badge" style="background-color: {{ $ticket->priority_color }}">
-                                                    {{ $ticket->priority_name }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="badge" style="background-color: {{ $ticket->category_color }}">
-                                                    {{ $ticket->category_name }}
-                                                </span>
-                                            </td>
                                             <td>{{ \Carbon\Carbon::parse($ticket->created_at)->diffForHumans() }}</td>
                                             <td>
-                                                <div class="btn-group">
-                                                    <a href="{{ route('staff.tickets.show', $ticket->id) }}" 
-                                                       class="btn btn-sm btn-primary">View</a>
-                                                    <button type="button" 
-                                                            class="btn btn-sm btn-info dropdown-toggle"
-                                                            data-toggle="dropdown">
-                                                        Update Status
-                                                    </button>
-                                                    <div class="dropdown-menu">
-                                                        <form action="{{ route('staff.tickets.status.update', $ticket->id) }}" 
-                                                              method="POST">
-                                                            @csrf
-                                                            <input type="hidden" name="status" value="open">
-                                                            <button type="submit" class="dropdown-item">Open</button>
-                                                        </form>
-                                                        <form action="{{ route('staff.tickets.status.update', $ticket->id) }}" 
-                                                              method="POST">
-                                                            @csrf
-                                                            <input type="hidden" name="status" value="in-progress">
-                                                            <button type="submit" class="dropdown-item">In Progress</button>
-                                                        </form>
-                                                        <form action="{{ route('staff.tickets.status.update', $ticket->id) }}" 
-                                                              method="POST">
-                                                            @csrf
-                                                            <input type="hidden" name="status" value="closed">
-                                                            <button type="submit" class="dropdown-item">Closed</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
+                                                <a href="{{ route('staff.tickets.show', $ticket->id) }}" 
+                                                   class="btn btn-sm btn-primary">
+                                                    View
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
-
-                        @if($tickets->hasPages())
-                            <div class="mt-4">
-                                {{ $tickets->links() }}
-                            </div>
-                        @endif
+                    @else
+                        <div class="alert alert-info">
+                            No tickets found.
+                        </div>
                     @endif
                 </div>
             </div>
@@ -136,31 +106,10 @@
 @push('styles')
 <style>
 .badge {
-    color: white;
-    padding: 0.35em 0.65em;
-    font-size: 0.9em;
+    padding: 0.5em 1em;
 }
-table th {
-    background-color: #f8f9fa;
-}
-.text-decoration-none:hover {
-    text-decoration: underline !important;
-}
-table td {
-    vertical-align: middle;
-}
-.btn-group .dropdown-menu form {
-    margin: 0;
-}
-.btn-group .dropdown-menu button {
-    width: 100%;
-    text-align: left;
-    background: none;
-    border: none;
-    padding: .25rem 1.5rem;
-}
-.btn-group .dropdown-menu button:hover {
-    background-color: #f8f9fa;
-}
+.badge.bg-low { background-color: #28a745; color: white; }
+.badge.bg-medium { background-color: #ffc107; color: black; }
+.badge.bg-high { background-color: #dc3545; color: white; }
 </style>
 @endpush

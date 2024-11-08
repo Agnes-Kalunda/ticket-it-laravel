@@ -4462,7 +4462,7 @@
             "dist": {
                 "type": "path",
                 "url": "../ticketit",
-                "reference": "aae24e68cc3e15f1ad4fc4deca5809a043000ce9"
+                "reference": "af1e42d98a620ef6cce2e934a0eb47baa517fbcd"
             },
             "require": {
                 "doctrine/dbal": "^2.10",
@@ -4489,7 +4489,8 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Ticket\\Ticketit\\": "src"
+                    "Ticket\\Ticketit\\": "src",
+                    "Ticket\\Ticketit\\Http\\": "src/Http"
                 }
             },
             "license": [
