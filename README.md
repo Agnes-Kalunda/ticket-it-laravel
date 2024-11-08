@@ -12,8 +12,8 @@ A Laravel application implementing the Ticketit package for customer support tic
 
 ## Requirements
 
-- PHP 7.1.3+
-- Laravel 5.8+
+- PHP 7.1.3
+- Laravel 5.8
 - MySQL
 - Composer
 
