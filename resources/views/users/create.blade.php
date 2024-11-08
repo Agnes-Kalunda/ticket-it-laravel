@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Add New User</h5>
-                    <a href="{{ route('users.index') }}" class="btn btn-secondary">Back to List</a>
+                    <!-- <a href="{{ route('users.index') }}" class="btn btn-secondary">Back to List</a> -->
                 </div>
 
                 <div class="card-body">

@@ -45,7 +45,8 @@
                                     <tr>
                                         <td>{{ $ticket->id }}</td>
                                         <td>
-                                            <a href="{{ route('customer.tickets.index') }}">
+                                        <a href="{{ route('customer.tickets.show', ['id' => $ticket->id]) }}">
+
                                                 {{ $ticket->subject }}
                                             </a>
                                         </td>

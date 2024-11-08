@@ -87,7 +87,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
-                                                    <th>Customer</th>
+                                                    <!-- <th>Customer</th> -->
                                                     <th>Subject</th>
                                                     <th>Priority</th>
                                                     <th>Status</th>
@@ -99,7 +99,7 @@
                                                 @foreach($tickets as $ticket)
                                                 <tr>
                                                     <td>{{ $ticket->id }}</td>
-                                                    <td>{{ $ticket->customer_name ?? 'N/A' }}</td>
+                                                    <!-- <td>{{ $ticket->customer_name ?? 'N/A' }}</td> -->
                                                     <td>
                                                         <a href="{{ route('staff.tickets.show', $ticket->id) }}">
                                                             {{ $ticket->subject }}
