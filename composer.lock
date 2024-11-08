@@ -4462,7 +4462,7 @@
             "dist": {
                 "type": "path",
                 "url": "../ticketit",
-                "reference": "af1e42d98a620ef6cce2e934a0eb47baa517fbcd"
+                "reference": "b81b0f4ecb23163abde2b711b867dec6275be48a"
             },
             "require": {
                 "doctrine/dbal": "^2.10",
