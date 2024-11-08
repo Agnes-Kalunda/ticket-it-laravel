@@ -8,6 +8,7 @@ A Laravel application implementing the Ticketit package for customer support tic
 - Ticket management system
 - Role-based permissions (Admin/Agent/Customer)
 - Dashboard for both staff and customers
+- Both customers and assigned agents can leave comments under tickets.
 
 
 ## Requirements
